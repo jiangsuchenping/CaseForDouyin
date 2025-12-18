@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎加入粉丝群</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 动态背景 */
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #001f3f 0%, #0074d9 50%, #7fdbff 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 粒子背景容器 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* 主容器 */
+        .container {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+            max-width: 90%;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #fff;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.4),
+                0 0 40px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(0, 255, 255, 0.5),
+                0 0 80px rgba(0, 255, 255, 0.3);
+            animation: 
+                pulse 2s ease-in-out infinite,
+                glow 3s ease-in-out infinite alternate,
+                titleRotate 10s ease-in-out infinite;
+            letter-spacing: 4px;
+            font-weight: 800;
+            position: relative;
+        }
+
+        /* 标题装饰 */
+        h1::before, h1::after {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        h1::before {
+            left: -50px;
+            animation-delay: 0s;
+        }
+
+        h1::after {
+            right: -50px;
+            animation-delay: 1s;
+        }
+
+        /* 跑马灯容器样式 */
+        .marquee-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 1.5rem 0;
+            margin: 2rem 0;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(0, 116, 217, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 跑马灯容器装饰 */
+        .marquee-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: marqueeShine 3s ease-in-out infinite;
+        }
+
+        /* 跑马灯样式 */
+        marquee {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(0, 116, 217, 0.5);
+            animation: 
+                colorShift 4s ease-in-out infinite alternate,
+                marqueeGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* 信息卡片 */
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 80px rgba(0, 116, 217, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 信息卡片装饰 */
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0074d9, #7fdbff, #39cccc, #001f3f, #0074d9);
+            background-size: 200% 100%;
+            animation: gradientLine 3s linear infinite;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 100px rgba(0, 116, 217, 0.3);
+        }
+
+        .info-card p {
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 0;
+            line-height: 1.8;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 信息卡片动态背景 */
+        .info-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 116, 217, 0.1);
+            transform: translate(-50%, -50%);
+            animation: cardPulse 4s ease-in-out infinite;
+        }
+
+        /* 行动按钮 */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #0074d9, #7fdbff, #001f3f);
+            background-size: 200% 100%;
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 2rem;
+            box-shadow: 
+                0 8px 25px rgba(0, 116, 217, 0.3),
+                0 4px 15px rgba(0, 116, 217, 0.2),
+                0 0 50px rgba(127, 219, 255, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: buttonFloat 3s ease-in-out infinite;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(0, 116, 217, 0.4),
+                0 6px 20px rgba(0, 116, 217, 0.3),
+                0 0 80px rgba(127, 219, 255, 0.5);
+            background-position: 100% 0;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* 装饰元素 */
+        .decorative-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
+        /* 不同大小的装饰元素 */
+        .element-large {
+            width: 300px;
+            height: 300px;
+            box-shadow: 0 0 60px rgba(0, 116, 217, 0.2);
+        }
+
+        .element-medium {
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 0 40px rgba(127, 219, 255, 0.2);
+        }
+
+        .element-small {
+            width: 100px;
+            height: 100px;
+            box-shadow: 0 0 20px rgba(0, 116, 217, 0.3);
+        }
+
+        /* 位置和动画延迟 */
+        .decorative-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .decorative-element:nth-child(2) {
+            bottom: 15%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .decorative-element:nth-child(3) {
+            top: 60%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .decorative-element:nth-child(4) {
+            top: 20%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+
+        .decorative-element:nth-child(5) {
+            bottom: 30%;
+            left: 15%;
+            animation-delay: 3s;
+        }
+
+        /* 动画效果 */
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(255, 255, 255, 0.8),
+                    0 0 20px rgba(255, 255, 255, 0.6),
+                    0 0 30px rgba(255, 255, 255, 0.4),
+                    0 0 40px rgba(255, 255, 255, 0.2),
+                    0 0 60px rgba(0, 116, 217, 0.5),
+                    0 0 80px rgba(0, 116, 217, 0.3);
+            }
+            to {
+                text-shadow: 
+                    0 0 20px rgba(255, 255, 255, 0.9),
+                    0 0 30px rgba(255, 255, 255, 0.7),
+                    0 0 40px rgba(255, 255, 255, 0.5),
+                    0 0 50px rgba(255, 255, 255, 0.3),
+                    0 0 80px rgba(0, 116, 217, 0.7),
+                    0 0 100px rgba(0, 116, 217, 0.5);
+            }
+        }
+
+        @keyframes colorShift {
+            from {
+                color: #fff;
+            }
+            to {
+                color: #0074d9;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-50%) scale(1.2);
+            }
+        }
+
+        @keyframes titleRotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                transform: rotate(1deg) scale(1.02);
+            }
+            75% {
+                transform: rotate(-1deg) scale(1.02);
+            }
+        }
+
+        @keyframes marqueeShine {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes marqueeGlow {
+            from {
+                text-shadow: 
+                    0 0 10px rgba(255, 255, 255, 0.8),
+                    0 0 20px rgba(255, 255, 255, 0.6),
+                    0 0 30px rgba(0, 116, 217, 0.5);
+            }
+            to {
+                text-shadow: 
+                    0 0 20px rgba(255, 255, 255, 0.9),
+                    0 0 30px rgba(255, 255, 255, 0.7),
+                    0 0 40px rgba(255, 255, 255, 0.5),
+                    0 0 50px rgba(0, 116, 217, 0.7),
+                    0 0 70px rgba(0, 116, 217, 0.5);
+            }
+        }
+
+        @keyframes gradientLine {
+            0% {
+                background-position: 0% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes cardPulse {
+            0%, 100% {
+                width: 0;
+                height: 0;
+            }
+            50% {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* 粒子动画 */
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+
+            h1::before, h1::after {
+                font-size: 1.5rem;
+            }
+
+            h1::before {
+                left: -30px;
+            }
+
+            h1::after {
+                right: -30px;
+            }
+
+            marquee {
+                font-size: 1.8rem;
+            }
+
+            .info-card p {
+                font-size: 1.1rem;
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .decorative-element {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+            }
+
+            h1::before, h1::after {
+                display: none;
+            }
+
+            marquee {
+                font-size: 1.4rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .info-card {
+                padding: 1.5rem;
+            }
+
+            .info-card p {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                font-size: 0.9rem;
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+
+    <!-- 装饰元素 -->
+    <div class="decorative-element element-large"></div>
+    <div class="decorative-element element-medium"></div>
+    <div class="decorative-element element-small"></div>
+    <div class="decorative-element element-small"></div>
+    <div class="decorative-element element-medium"></div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <h1>🎉 欢迎来到粉丝群 🎉</h1>
+        
+        <!-- 跑马灯容器 -->
+        <div class="marquee-container">
+            <marquee behavior="scroll" direction="left" scrollamount="12">
+                🚀 欢迎0基础编程爱好者加入粉丝群！一起学习，共同进步！ 🚀
+            </marquee>
+            <marquee behavior="scroll" direction="right" scrollamount="15">
+                💻 26+年编程经验，从记事本到AI IDE，全程免费陪跑！ 💻
+            </marquee>
+        </div>
+
+        <!-- 信息卡片 -->
+        <div class="info-card">
+            <p>
+                💡 在这里，你可以学习编程基础知识，结交志同道合的朋友！<br>
+                🎯 从0基础开始，循序渐进，掌握实用的编程技能！<br>
+                🤝 与其他编程爱好者一起讨论问题，共同成长！<br>
+                🌟 定期分享学习资源和实战项目，助力你的编程之路！
+            </p>
+        </div>
+
+        <!-- 行动按钮 -->
+        <a href="#" class="cta-button">立即加入</a>
+    </div>
+
+    <!-- JavaScript 增强效果 -->
+    <script>
+        // 添加鼠标移动效果
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // 背景位置跟随鼠标移动
+            document.body.style.backgroundPosition = `${50 + x * 10}% ${50 + y * 10}%`;
+            
+            // 装饰元素跟随鼠标轻微移动
+            const elements = document.querySelectorAll('.decorative-element');
+            elements.forEach((element, index) => {
+                const speed = (index + 1) * 0.5;
+                const moveX = x * speed * 50;
+                const moveY = y * speed * 50;
+                element.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        // 添加页面加载动画
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const container = document.querySelector('.container');
+                container.style.transition = 'all 0.8s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // 粒子效果实现
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles-js');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 3 + 1;
+                
+                // 随机颜色
+                const colors = ['#fff', '#0074d9', '#7fdbff', '#001f3f', '#39cccc'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // 随机动画延迟和持续时间
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 5;
+                
+                // 设置样式
+                particle.style.cssText = `
+                    position: absolute;
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    opacity: 0.6;
+                    animation: particleFloat ${duration}s ease-in-out infinite;
+                    animation-delay: ${delay}s;
+                    pointer-events: none;
+                `;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 创建粒子
+        createParticles();
+
+        // 添加点击效果
+        document.addEventListener('click', (e) => {
+            createClickEffect(e.clientX, e.clientY);
+        });
+
+        // 创建点击效果
+        function createClickEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            
+            effect.style.cssText = `
+                position: absolute;
+                left: ${x}px;
+                top: ${y}px;
+                width: 0;
+                height: 0;
+                border: 2px solid #0074d9;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                animation: clickRipple 0.8s ease-out forwards;
+            `;
+            
+            document.body.appendChild(effect);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                effect.remove();
+            }, 800);
+        }
+
+        // 点击涟漪动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes clickRipple {
+                0% {
+                    width: 0;
+                    height: 0;
+                    opacity: 1;
+                }
+                100% {
+                    width: 100px;
+                    height: 100px;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
