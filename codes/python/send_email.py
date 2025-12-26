@@ -22,110 +22,114 @@ from email.header import Header
 from email.utils import formataddr
 import os
 
+
 def send_text_email():
     """发送纯文本邮件"""
-    # 邮件服务器配置
-    SMTP_SERVER = 'smtp.notice.e-medicine.cn'  # SMTP服务器地址
-    SMTP_PORT = 25  # SMTP服务器端口（通常为25，SSL为465，TLS为587）
-    SMTP_USER = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    SMTP_PASSWORD = 'Xl!@23t6G8m3'  # 发件人密码
+    # 邮件服务器配置 - 使用占位符，用户需要替换为实际配置
+    SMTP_SERVER = 'smtp.example.com'  # SMTP服务器地址
+    SMTP_PORT = 587  # SMTP服务器端口
+    SMTP_USER = 'your_email@example.com'  # 发件人邮箱
+    SMTP_PASSWORD = 'your_password'  # 发件人密码或授权码
     
     # 邮件内容
-    sender = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    receiver = 'ping.chen@shinsoft.net'  # 收件人邮箱
+    sender = 'your_email@example.com'  # 发件人邮箱
+    receiver = 'recipient@example.com'  # 收件人邮箱
     subject = 'Python 纯文本邮件测试'
-    body = '这是一封使用 Python smtplib 库发送的纯文本邮件。\n\n祝好！'
+    body = '这是一封使用 Python 发送的纯文本邮件。'
     
     try:
-        # 创建邮件对象
+        # 创建纯文本邮件对象
         msg = MIMEText(body, 'plain', 'utf-8')
-        msg['From'] = formataddr(['发件人名称', sender])  # 发件人信息
-        msg['To'] = formataddr(['收件人名称', receiver])  # 收件人信息
-        msg['Subject'] = Header(subject, 'utf-8')  # 邮件主题
+        msg['From'] = formataddr(['发件人名称', sender])
+        msg['To'] = formataddr(['收件人名称', receiver])
+        msg['Subject'] = Header(subject, 'utf-8')
         
-        # 连接邮件服务器并发送邮件
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        # 如果需要TLS加密
+        print('纯文本邮件内容已准备好：')
+        print(f'  发件人：{sender}')
+        print(f'  收件人：{receiver}')
+        print(f'  主题：{subject}')
+        print(f'  正文：{body}')
+        print('  （注：未实际发送，仅展示示例）')
+        
+        # 连接服务器并发送（默认注释掉，防止误发）
+        # server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         # server.starttls()
-        # 登录邮件服务器
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        # 发送邮件
-        server.sendmail(sender, [receiver], msg.as_string())
-        # 关闭连接
-        server.quit()
+        # server.login(SMTP_USER, SMTP_PASSWORD)
+        # server.sendmail(sender, [receiver], msg.as_string())
+        # server.quit()
+        # print('纯文本邮件发送成功！')
         
-        print('纯文本邮件发送成功！')
         return True
     except Exception as e:
-        print(f'纯文本邮件发送失败：{str(e)}')
+        print(f'纯文本邮件示例生成失败：{str(e)}')
         return False
+
 
 def send_html_email():
     """发送HTML格式邮件"""
-    # 邮件服务器配置
-    SMTP_SERVER = 'smtp.notice.e-medicine.cn'  # SMTP服务器地址
-    SMTP_PORT = 25  # SMTP服务器端口（通常为25，SSL为465，TLS为587）
-    SMTP_USER = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    SMTP_PASSWORD = 'Xl!@23t6G8m3'  # 发件人密码
+    # 邮件服务器配置 - 使用占位符，用户需要替换为实际配置
+    SMTP_SERVER = 'smtp.example.com'  # SMTP服务器地址
+    SMTP_PORT = 587  # SMTP服务器端口
+    SMTP_USER = 'your_email@example.com'  # 发件人邮箱
+    SMTP_PASSWORD = 'your_password'  # 发件人密码或授权码
     
     # 邮件内容
-    sender = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    receiver = 'ping.chen@shinsoft.net'  # 收件人邮箱
+    sender = 'your_email@example.com'  # 发件人邮箱
+    receiver = 'recipient@example.com'  # 收件人邮箱
     subject = 'Python HTML 邮件测试'
     
-    # HTML内容
+    # HTML邮件正文
     html_body = '''
     <html>
-        <body>
-            <h1>Python HTML 邮件测试</h1>
-            <p>这是一封使用 Python 发送的 HTML 格式邮件。</p>
-            <p>可以包含：</p>
-            <ul>
-                <li>标题标签</li>
-                <li>段落标签</li>
-                <li>列表标签</li>
-                <li>以及其他 HTML 元素</li>
-            </ul>
-            <p style="color: blue;">还可以使用 CSS 样式！</p>
-        </body>
+    <body>
+        <h1>Python HTML邮件测试</h1>
+        <p>这是一封使用 Python 发送的 HTML 格式邮件。</p>
+        <p>可以包含 <a href="https://www.python.org">链接</a> 和 <strong>格式化文本</strong>。</p>
+    </body>
     </html>
     '''
     
     try:
-        # 创建邮件对象
+        # 创建HTML邮件对象
         msg = MIMEText(html_body, 'html', 'utf-8')
         msg['From'] = formataddr(['发件人名称', sender])
         msg['To'] = formataddr(['收件人名称', receiver])
         msg['Subject'] = Header(subject, 'utf-8')
         
-        # 连接服务器并发送
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        # server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        server.sendmail(sender, [receiver], msg.as_string())
-        server.quit()
+        print('HTML邮件内容已准备好：')
+        print(f'  发件人：{sender}')
+        print(f'  收件人：{receiver}')
+        print(f'  主题：{subject}')
+        print(f'  HTML正文长度：{len(html_body)} 字符')
+        print('  （注：未实际发送，仅展示示例）')
         
-        print('HTML 邮件发送成功！')
+        # 连接服务器并发送（默认注释掉，防止误发）
+        # server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        # server.starttls()
+        # server.login(SMTP_USER, SMTP_PASSWORD)
+        # server.sendmail(sender, [receiver], msg.as_string())
+        # server.quit()
+        # print('HTML邮件发送成功！')
+        
         return True
     except Exception as e:
-        print(f'HTML 邮件发送失败：{str(e)}')
+        print(f'HTML邮件示例生成失败：{str(e)}')
         return False
+
 
 def send_email_with_attachment():
     """发送带附件的邮件"""
-    # 邮件服务器配置
-    SMTP_SERVER = 'smtp.notice.e-medicine.cn'  # SMTP服务器地址
-    SMTP_PORT = 25  # SMTP服务器端口（通常为25，SSL为465，TLS为587）
-    SMTP_USER = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    SMTP_PASSWORD = 'Xl!@23t6G8m3'  # 发件人密码
+    # 邮件服务器配置 - 使用占位符，用户需要替换为实际配置
+    SMTP_SERVER = 'smtp.example.com'  # SMTP服务器地址
+    SMTP_PORT = 587  # SMTP服务器端口
+    SMTP_USER = 'your_email@example.com'  # 发件人邮箱
+    SMTP_PASSWORD = 'your_password'  # 发件人密码或授权码
     
     # 邮件内容
-    sender = 'notification@notice.e-medicine.cn'  # 发件人邮箱
-    receiver = 'ping.chen@shinsoft.net'  # 收件人邮箱
+    sender = 'your_email@example.com'  # 发件人邮箱
+    receiver = 'recipient@example.com'  # 收件人邮箱
     subject = 'Python 带附件邮件测试'
-    
-    # 邮件正文
-    body = '这是一封带附件的邮件，附件为当前目录下的 hundred_chickens.py 文件。'
+    body = '这是一封带附件的邮件，附件为测试文件。'
     
     try:
         # 创建带附件的邮件对象
@@ -146,26 +150,35 @@ def send_email_with_attachment():
                 msg.attach(part)
             print(f'已添加附件：{attachment_file}')
         else:
-            print(f'附件文件不存在：{attachment_file}')
+            print(f'示例附件文件不存在：{attachment_file}')
         
-        # 连接服务器并发送
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        print('带附件的邮件内容已准备好：')
+        print(f'  发件人：{sender}')
+        print(f'  收件人：{receiver}')
+        print(f'  主题：{subject}')
+        print(f'  正文：{body}')
+        print('  （注：未实际发送，仅展示示例）')
+        
+        # 连接服务器并发送（默认注释掉，防止误发）
+        # server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         # server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        server.sendmail(sender, [receiver], msg.as_string())
-        server.quit()
+        # server.login(SMTP_USER, SMTP_PASSWORD)
+        # server.sendmail(sender, [receiver], msg.as_string())
+        # server.quit()
+        # print('带附件的邮件发送成功！')
         
-        print('带附件的邮件发送成功！')
         return True
     except Exception as e:
-        print(f'带附件的邮件发送失败：{str(e)}')
+        print(f'带附件的邮件示例生成失败：{str(e)}')
         return False
+
 
 if __name__ == '__main__':
     print('Python 发送邮件示例')
     print('==================')
+    print('\n注意：此示例不包含真实的SMTP服务器配置，请用户替换为自己的配置后再实际发送。')
     
-    # 非交互式演示，直接展示所有功能
+    # 交互式演示，直接展示所有功能
     print('\n1. 演示发送纯文本邮件（仅展示代码逻辑，不实际发送）：')
     send_text_email()
     
@@ -176,3 +189,8 @@ if __name__ == '__main__':
     send_email_with_attachment()
     
     print('\n所有演示完成！')
+    print('\n实际使用时，请：')
+    print('1. 替换SMTP服务器配置（服务器地址、端口、用户名、密码）')
+    print('2. 替换发件人和收件人邮箱地址')
+    print('3. 根据需要修改邮件内容')
+    print('4. 取消相关注释以实际发送邮件')

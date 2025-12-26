@@ -1,0 +1,57 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.vspscc
+*.vssscc
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Log files
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# App settings (local)
+appsettings.*.json
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Debug symbols
+*.pdb
+*.dll
+*.exe
+
+# Testing
+TestResults/
+.coverage
+
+# Documentation
+*.md.html
+
+# Package restore
+.nuget/
+package.lock.json
